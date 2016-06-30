@@ -23,10 +23,12 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="Android Inkscape Wrapper" />
+        <module name="Svg2Drawable" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Android Inkscape Wrapper" target="1.8" />
+      <module name="Svg2Drawable" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
