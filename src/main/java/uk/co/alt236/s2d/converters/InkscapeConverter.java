@@ -1,11 +1,12 @@
 package uk.co.alt236.s2d.converters;
 
 import uk.co.alt236.s2d.cmd.InkscapeWrapper;
+import uk.co.alt236.s2d.enums.ConverterName;
 import uk.co.alt236.s2d.outputpayload.OutputPayload;
 
 import java.util.List;
 
-public class InkscapeConverter implements Converter {
+/*package*/ class InkscapeConverter implements Converter {
 
     @Override
     public void convert(final List<OutputPayload> outputPayloadList) {
@@ -18,5 +19,10 @@ public class InkscapeConverter implements Converter {
                     payload.getWidth(),
                     payload.getHeight());
         }
+    }
+
+    @Override
+    public ConverterName getName() {
+        return ConverterName.INKSCAPE;
     }
 }

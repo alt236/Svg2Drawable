@@ -3,6 +3,7 @@ package uk.co.alt236.s2d.converters;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
+import uk.co.alt236.s2d.enums.ConverterName;
 import uk.co.alt236.s2d.outputpayload.OutputPayload;
 
 import java.io.File;
@@ -10,7 +11,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-public class BatikConverter implements Converter {
+/*package*/ class BatikConverter implements Converter {
 
     @Override
     public void convert(final List<OutputPayload> outputPayloadList) throws Exception {
@@ -40,5 +41,10 @@ public class BatikConverter implements Converter {
             ostream.flush();
             ostream.close();
         }
+    }
+
+    @Override
+    public ConverterName getName() {
+        return ConverterName.BATIK;
     }
 }

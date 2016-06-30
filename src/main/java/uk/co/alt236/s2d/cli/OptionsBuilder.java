@@ -2,6 +2,7 @@ package uk.co.alt236.s2d.cli;
 
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import uk.co.alt236.s2d.enums.ConverterName;
 import uk.co.alt236.s2d.enums.IconType;
 
 import java.util.ArrayList;
@@ -11,11 +12,11 @@ import java.util.Locale;
 
 public class OptionsBuilder {
 
-    protected static final String ARG_ICON_TYPE = "icontype";
-    protected static final String ARG_OUTPUT = "output";
-    protected static final String ARG_CONVERTER = "converter";
-    protected static final String ARG_INPUT = "input";
-    protected static final String ARG_OVERWRITE = "overwrite";
+    /*package*/ static final String ARG_ICON_TYPE = "icontype";
+    /*package*/ static final String ARG_OUTPUT = "output";
+    /*package*/ static final String ARG_CONVERTER = "converter";
+    /*package*/ static final String ARG_INPUT = "input";
+    /*package*/ static final String ARG_OVERWRITE = "overwrite";
 
     private static <E extends Enum<?>> String getNiceEnumArgList(final Class<E> enumClass) {
 
@@ -76,11 +77,13 @@ public class OptionsBuilder {
     }
 
     private Option createConverterOption() {
+        final String validArgs = getNiceEnumArgList(ConverterName.class);
+
         return Option.builder(ARG_CONVERTER)
                 .hasArg()
                 .required(false)
                 .optionalArg(true)
-                .desc("The converter to use.")
+                .desc("The converter to use. Must be one of: [" + validArgs + "].")
                 .build();
     }
 

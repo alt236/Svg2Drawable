@@ -1,8 +1,8 @@
 package uk.co.alt236.s2d;
 
 import uk.co.alt236.s2d.cli.CommandLineWrapper;
-import uk.co.alt236.s2d.converters.BatikConverter;
 import uk.co.alt236.s2d.converters.Converter;
+import uk.co.alt236.s2d.converters.ConverterResolver;
 import uk.co.alt236.s2d.enums.IconType;
 import uk.co.alt236.s2d.outputpayload.OutputPayload;
 import uk.co.alt236.s2d.outputpayload.OutputPayloadFactory;
@@ -15,18 +15,26 @@ public class Svg2Drawable {
 //    private static final String DEST = "/home/alex/tmp/image/";
 
     private final CommandLineWrapper commandLine;
+    private final Converter converter;
 
     public Svg2Drawable(final CommandLineWrapper commandLine) {
         this.commandLine = commandLine;
+
+        final ConverterResolver resolver = new ConverterResolver();
+        converter = resolver.resolve(commandLine.getConverter());
     }
 
-    private static void validate(final List<OutputPayload> payloadList) {
+    private void validate(final List<OutputPayload> payloadList) {
         for (final OutputPayload payload : payloadList) {
             final File outFile = new File(payload.getTargetFile());
             final File inFile = new File(payload.getSvgPath());
 
             if (!inFile.exists()) {
                 throw new IllegalStateException("Input file does not exist! " + inFile);
+            }
+
+            if (outFile.exists() && !commandLine.isOverwriteEnabled()) {
+                throw new IllegalStateException("Overwrite is not enabled and target file '" + outFile + "' exists!");
             }
 
             if (!outFile.exists()) {
@@ -45,9 +53,6 @@ public class Svg2Drawable {
 
         validate(payloadList);
 
-        final Converter converter;
-
-        converter = new BatikConverter();
         converter.convert(payloadList);
     }
 }
