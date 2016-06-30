@@ -4,6 +4,7 @@ import uk.co.alt236.s2d.cli.CommandLineWrapper;
 import uk.co.alt236.s2d.converters.Converter;
 import uk.co.alt236.s2d.converters.ConverterResolver;
 import uk.co.alt236.s2d.enums.IconType;
+import uk.co.alt236.s2d.exceptions.ValidationException;
 import uk.co.alt236.s2d.outputpayload.OutputPayload;
 import uk.co.alt236.s2d.outputpayload.OutputPayloadFactory;
 
@@ -30,16 +31,16 @@ public class Svg2Drawable {
             final File inFile = new File(payload.getSvgPath());
 
             if (!inFile.exists()) {
-                throw new IllegalStateException("Input file does not exist! " + inFile);
+                throw new ValidationException("Input file does not exist! " + inFile);
             }
 
             if (outFile.exists() && !commandLine.isOverwriteEnabled()) {
-                throw new IllegalStateException("Overwrite is not enabled and target file '" + outFile + "' exists!");
+                throw new ValidationException("Overwrite is not enabled and target file '" + outFile + "' exists!");
             }
 
             if (!outFile.exists()) {
                 if (!outFile.getParentFile().mkdirs()) {
-                    throw new IllegalStateException("Failed to create directory structure for " + outFile);
+                    throw new ValidationException("Failed to create directory structure for " + outFile);
                 }
             }
         }
