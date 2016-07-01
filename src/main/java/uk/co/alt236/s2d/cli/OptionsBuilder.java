@@ -2,6 +2,7 @@ package uk.co.alt236.s2d.cli;
 
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import uk.co.alt236.s2d.Constants;
 import uk.co.alt236.s2d.enums.ConverterName;
 import uk.co.alt236.s2d.enums.IconType;
 
@@ -38,6 +39,10 @@ public class OptionsBuilder {
         return sb.toString();
     }
 
+    private static <E extends Enum<?>> String toLower(final E enm) {
+        return enm.name().toLowerCase(Locale.US);
+    }
+
     public Options compileOptions() {
         final Options options = new Options();
 
@@ -53,7 +58,7 @@ public class OptionsBuilder {
     private Option createOverwriteOption() {
         return Option.builder(ARG_OVERWRITE)
                 .required(false)
-                .desc("Overwrite existing files.")
+                .desc("Overwrite existing files. If this is not set and ANY of the target files exist, the app will abort.")
                 .build();
     }
 
@@ -63,7 +68,7 @@ public class OptionsBuilder {
                 .hasArg()
                 .required(true)
                 .optionalArg(false)
-                .desc("The icon type to export. Must be one of: [" + validArgs + "].")
+                .desc("The icon type to export. Must be one of: [" + validArgs + "] (case insensitive).")
                 .build();
     }
 
@@ -83,7 +88,9 @@ public class OptionsBuilder {
                 .hasArg()
                 .required(false)
                 .optionalArg(true)
-                .desc("The converter to use. Must be one of: [" + validArgs + "].")
+                .desc("The converter to use. Must be one of: [" + validArgs + "] (case insensitive)." +
+                        " The default value is '" + toLower(Constants.DEFAULT_CONVERTER) + "'." +
+                        " To use '" + toLower(ConverterName.INKSCAPE) + "', the inkscape binary must be in your PATH.")
                 .build();
     }
 

@@ -1,20 +1,26 @@
 package uk.co.alt236.s2d;
 
 import org.apache.commons.cli.*;
+import uk.co.alt236.s2d.cli.CommandHelpPrinter;
 import uk.co.alt236.s2d.cli.CommandLineWrapper;
 import uk.co.alt236.s2d.cli.OptionsBuilder;
 import uk.co.alt236.s2d.exceptions.S2DException;
 
+import java.io.File;
+
 public class Main {
-    private static final String CMD_NAME = "svg2drawable";
+
+    private static String getJarName() {
+        final File f = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toString());
+        return f.getName();
+    }
 
     public static void main(final String[] args) throws Exception {
         final CommandLineParser parser = new DefaultParser();
         final Options options = new OptionsBuilder().compileOptions();
 
         if (args.length == 0) {
-            final HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp(CMD_NAME, options, true);
+            new CommandHelpPrinter(options, getJarName()).printHelp();
         } else {
             CommandLine line = null;
 
