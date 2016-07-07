@@ -5,6 +5,7 @@ import uk.co.alt236.s2d.cli.CommandHelpPrinter;
 import uk.co.alt236.s2d.cli.CommandLineWrapper;
 import uk.co.alt236.s2d.cli.OptionsBuilder;
 import uk.co.alt236.s2d.exceptions.S2DException;
+import uk.co.alt236.s2d.resources.S2DStrings;
 
 import java.io.File;
 
@@ -16,6 +17,7 @@ public class Main {
     }
 
     public static void main(final String[] args) throws Exception {
+        final S2DStrings strings = new S2DStrings();
         final CommandLineParser parser = new DefaultParser();
         final Options options = new OptionsBuilder().compileOptions();
 
@@ -27,14 +29,20 @@ public class Main {
             try {
                 line = parser.parse(options, args);
             } catch (final ParseException exp) {
-                System.err.println("Parsing failed.  Reason: " + exp.getMessage());
+                final String message = strings.getString("error_cli_parsing_failed", exp.getMessage());
+                printErrorAndDie(message);
             }
 
             try {
                 new Svg2Drawable(new CommandLineWrapper(line)).convert();
             } catch (S2DException e) {
-                System.err.println(e.getMessage());
+                printErrorAndDie(e.getMessage());
             }
         }
+    }
+
+    private static void printErrorAndDie(final String error) {
+        System.err.println(error);
+        System.exit(1);
     }
 }

@@ -2,6 +2,9 @@ package uk.co.alt236.s2d.cli;
 
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
+import uk.co.alt236.s2d.resources.S2DStrings;
+
+import java.util.ResourceBundle;
 
 public class CommandHelpPrinter {
 
@@ -14,10 +17,11 @@ public class CommandHelpPrinter {
     }
 
     public void printHelp() {
-        String header = "Convert a SVG file to a bunch on Android PNG drawables.\n\n";
-        String footer =
-                "\nSource code: https://github.com/alt236/Svg2Drawable/" +
-                        "\nPlease report issues at https://github.com/alt236/Svg2Drawable/issues";
+
+        final ResourceBundle labels = new S2DStrings();
+
+        final String header = labels.getString("cli_help_message_header");
+        final String footer = labels.getString("cli_help_message_footer");
 
         final HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp(binaryName, header, options, footer, true);

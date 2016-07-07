@@ -5,6 +5,7 @@ import org.apache.commons.cli.Options;
 import uk.co.alt236.s2d.Constants;
 import uk.co.alt236.s2d.enums.ConverterName;
 import uk.co.alt236.s2d.enums.IconType;
+import uk.co.alt236.s2d.resources.S2DStrings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +19,12 @@ public class OptionsBuilder {
     /*package*/ static final String ARG_CONVERTER = "converter";
     /*package*/ static final String ARG_INPUT = "input";
     /*package*/ static final String ARG_OVERWRITE = "overwrite";
+
+    private final S2DStrings strings;
+
+    public OptionsBuilder() {
+        strings = new S2DStrings();
+    }
 
     private static <E extends Enum<?>> String getNiceEnumArgList(final Class<E> enumClass) {
 
@@ -56,50 +63,59 @@ public class OptionsBuilder {
     }
 
     private Option createOverwriteOption() {
+        final String desc = strings.getString("cli_cmd_desc_overwrite");
         return Option.builder(ARG_OVERWRITE)
                 .required(false)
-                .desc("Overwrite existing files. If this is not set and ANY of the target files exist, the app will abort.")
+                .desc(desc)
                 .build();
     }
 
     private Option createIconTypeOption() {
         final String validArgs = getNiceEnumArgList(IconType.class);
+        final String desc = strings.getString("cli_cmd_desc_icontype", validArgs);
+
         return Option.builder(ARG_ICON_TYPE)
                 .hasArg()
                 .required(true)
                 .optionalArg(false)
-                .desc("The icon type to export. Must be one of: [" + validArgs + "] (case insensitive).")
+                .desc(desc)
                 .build();
     }
 
     private Option createOutputDirectoryOption() {
+        final String desc = strings.getString("cli_cmd_desc_output");
+
         return Option.builder(ARG_OUTPUT)
                 .hasArg()
                 .required(true)
                 .optionalArg(false)
-                .desc("The output directory. It must exist and be writable")
+                .desc(desc)
                 .build();
     }
 
     private Option createConverterOption() {
         final String validArgs = getNiceEnumArgList(ConverterName.class);
+        final String desc = strings.getString("cli_cmd_desc_converter",
+                validArgs,
+                toLower(Constants.DEFAULT_CONVERTER),
+                toLower(ConverterName.INKSCAPE));
 
         return Option.builder(ARG_CONVERTER)
                 .hasArg()
                 .required(false)
                 .optionalArg(true)
-                .desc("The converter to use. Must be one of: [" + validArgs + "] (case insensitive)." +
-                        " The default value is '" + toLower(Constants.DEFAULT_CONVERTER) + "'." +
-                        " To use '" + toLower(ConverterName.INKSCAPE) + "', the inkscape binary must be in your PATH.")
+                .desc(desc)
                 .build();
     }
 
     private Option createSvgOption() {
+        final String desc = strings.getString("cli_cmd_desc_input");
+
         return Option.builder(ARG_INPUT)
                 .hasArg()
                 .required(true)
                 .optionalArg(false)
-                .desc("The SVG input file. It must exist and be readable")
+                .desc(desc)
                 .build();
     }
 }
