@@ -29,7 +29,7 @@ public class Main {
             try {
                 line = parser.parse(options, args);
             } catch (final ParseException exp) {
-                final String message = strings.getString("error_cli_parsing_failed", exp.getMessage());
+                final String message = exp.getMessage();
                 printErrorAndDie(message);
             }
 
