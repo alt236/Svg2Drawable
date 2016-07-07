@@ -20,7 +20,7 @@ public final class OutputPayloadFactory {
 
         final List<OutputPayload> list = new ArrayList<>();
         final File outputDirectoryAsFile = new File(outputDirectory);
-        final String targetFilename = createPngFilename(svgPath);
+        final String targetFilename = createOutputFilename(svgPath);
 
         if (iconType == IconType.WEB_ICON) {
             list.add(new OutputPayload(
@@ -72,8 +72,17 @@ public final class OutputPayloadFactory {
         return new File(resFile, targetFileName).getAbsolutePath();
     }
 
-    private static String createPngFilename(final String svgPath) {
-        final File svg = new File(svgPath);
-        return svg.getName() + ".png";
+    private static String createOutputFilename(final String filePath) {
+        final File svg = new File(filePath);
+        final String fileName = svg.getName();
+        final String rawFileName;
+
+        if (fileName.contains(".")) {
+            rawFileName = fileName.substring(0, fileName.lastIndexOf('.'));
+        } else {
+            rawFileName = fileName;
+        }
+
+        return rawFileName + ".png";
     }
 }
